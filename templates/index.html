@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Post Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #999;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .result p {
+            color: #333;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .emoji {
+            font-size: 40px;
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="emoji">✨</span>
+        <h1>Mood Post Generator</h1>
+        <p class="subtitle">Tell us how you feel — AI will write your perfect post!</p>
+
+        <form method="POST" action="/generate">
+            <label>How are you feeling today?</label>
+            <input 
+                type="text" 
+                name="mood" 
+                placeholder="e.g. happy, motivated, sad, excited..."
+                value="{{ mood if mood else '' }}"
+                required
+            />
+
+            <label>Choose your platform</label>
+            <select name="platform">
+                <option value="instagram" {% if platform == 'instagram' %}selected{% endif %}>📸 Instagram</option>
+                <option value="linkedin" {% if platform == 'linkedin' %}selected{% endif %}>💼 LinkedIn</option>
+                <option value="twitter" {% if platform == 'twitter' %}selected{% endif %}>🐦 Twitter</option>
+                <option value="facebook" {% if platform == 'facebook' %}selected{% endif %}>📘 Facebook</option>
+            </select>
+
+            <button type="submit">🤖 Generate My Post</button>
+        </form>
+
+        {% if post %}
+        <div class="result">
+            <h3>✨ Your AI Generated Post:</h3>
+            <p>{{ post }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
