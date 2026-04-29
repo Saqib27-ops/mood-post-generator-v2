@@ -1,18 +1,18 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from groq import Groq
-import os
 from dotenv import load_dotenv
+import os
 
-# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = "moodapp123"
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-# Get API key securely
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 @app.route("/")
 def home():
-    return render_template("index.html")
+    history = session.get("history", [])
+    return render_template("index.html", history=history)
 
 @app.route("/generate", methods=["POST"])
 def generate():
@@ -29,7 +29,13 @@ def generate():
     )
 
     post = response.choices[0].message.content
-    return render_template("index.html", post=post, mood=mood, platform=platform)
+
+    history = session.get("history", [])
+    history.insert(0, {"mood": mood, "platform": platform, "post": post})
+    history = history[:5]
+    session["history"] = history
+
+    return render_template("index.html", post=post, mood=mood, platform=platform, history=history)
 
 if __name__ == "__main__":
     app.run(debug=True)

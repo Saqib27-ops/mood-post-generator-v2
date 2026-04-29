@@ -141,9 +141,12 @@
 
         {% if post %}
         <div class="result">
-            <h3>✨ Your AI Generated Post:</h3>
-            <p>{{ post }}</p>
-        </div>
+    <h3>✨ Your AI Generated Post:</h3>
+    <p id="generatedPost">{{ post }}</p>
+    <button type="button" onclick="copyPost()" class="copy-btn">
+        📋 Copy Post
+    </button>
+</div>
         {% endif %}
     </div>
 </body>
